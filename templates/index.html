@@ -1,0 +1,34 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Streaming Service</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/stream');
+            socket.on('new_recommendations', function(data) {
+                console.log('New recommendations received:', data);
+                // Update the recommendations section in the frontend
+                var recommendationsList = document.getElementById('recommendations-list');
+                recommendationsList.innerHTML = ''; // Clear previous recommendations
+                data.recommendations.forEach(function(recommendation) {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = recommendation.title + ' by ' + recommendation.name;
+                    recommendationsList.appendChild(listItem);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Welcome to Your Music Streaming Service</h1>
+    <p>This is a simple prototype of an interactive music streaming application.</p>
+
+    <h2>Recommendations</h2>
+    <ul id="recommendations-list">
+        <!-- Recommendations will be dynamically added here -->
+    </ul>
+</body>
+</html>
